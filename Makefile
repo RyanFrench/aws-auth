@@ -2,7 +2,7 @@
 
 build:
 	mkdir -p bin
-	go build -v -i -o ${OUTPUT}
+	go build -v -i -o bin/aws-role
 
 test: build
 	go test -v ./...
