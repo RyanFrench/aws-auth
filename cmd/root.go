@@ -22,13 +22,14 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "aws-role [command]",
+	Use:   "aws-role --role-arn [role] [command]",
 	Short: "Assume a role in AWS and optionally run a command",
 	Long: `
-Assume a role within AWS. This will set your AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN environment variables, allowing you to run a command using the new role. If no command is provided, they will be exported into your current session.
+Run a command within the context of assuming a role. This is not persistent, and will only affect the command that is passed in.
 
+e.g.
 
-Use "aws-role [command] --help" for more information about a command.`,
+aws-role  --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
 	Run:     run,
 	Version: "0.1.0",
 	Args:    cobra.MinimumNArgs(1),
