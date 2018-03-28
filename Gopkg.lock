@@ -2,10 +2,22 @@
 
 
 [[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = ["."]
+  revision = "851c8ce700ee981b0ce28634721c2a925c6f3d0b"
+  version = "v1.13.22"
+
+[[projects]]
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
   version = "v1.4.7"
+
+[[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "064e2069ce9c359c118179501254f67d7d37ba24"
+  version = "0.2"
 
 [[projects]]
   branch = "master"
@@ -49,6 +61,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
   name = "github.com/spf13/afero"
   packages = [
     ".",
@@ -89,8 +107,17 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "88942b9c40a4c9d203b82b3731787b672d6e809b"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "13d03a9a82fba647c21a0ef8fba44a795d0f0835"
 
 [[projects]]
@@ -115,6 +142,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a4a62ad872a415f3f68d295896c83a92786b4f5bcf58b6b44c815b16806b3dc9"
+  inputs-digest = "82795da7550e1b0db546077b90e205ccaa230d679a394a6de02d607b41f94fdd"
   solver-name = "gps-cdcl"
   solver-version = 1

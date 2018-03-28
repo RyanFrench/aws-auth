@@ -3,9 +3,15 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/sts"
+	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -49,9 +55,46 @@ func init() {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	roleSessionName, _ := uuid.NewUUID()
+	svc := sts.New(session.New())
+	input := &sts.AssumeRoleInput{
+		DurationSeconds: aws.Int64(3600),
+		RoleArn:         aws.String(roleArn),
+		RoleSessionName: aws.String(roleSessionName.String()),
+	}
+
+	assumeRoleResponse, err := svc.AssumeRole(input)
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case sts.ErrCodeMalformedPolicyDocumentException:
+				log.WithError(aerr).
+					Errorln(sts.ErrCodeMalformedPolicyDocumentException)
+			case sts.ErrCodePackedPolicyTooLargeException:
+				log.WithError(aerr).
+					Errorln(sts.ErrCodePackedPolicyTooLargeException)
+			case sts.ErrCodeRegionDisabledException:
+				log.WithError(aerr).
+					Errorln(sts.ErrCodeRegionDisabledException)
+			default:
+				log.WithError(aerr).
+					Errorln(sts.ErrCodeRegionDisabledException)
+			}
+		} else {
+			log.WithError(err).
+				Errorln("Error assuming role")
+		}
+		return
+	}
+
 	command := exec.Command(args[0], args[1:]...)
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
+	command.Env = append(os.Environ(),
+		fmt.Sprintf("AWS_ACCESS_KEY_ID=%s", *assumeRoleResponse.Credentials.AccessKeyId),
+		fmt.Sprintf("AWS_SECRET_ACCESS_KEY=%s", *assumeRoleResponse.Credentials.SecretAccessKey),
+		fmt.Sprintf("AWS_SESSION_TOKEN=%s", *assumeRoleResponse.Credentials.SessionToken))
+
 	if err := command.Run(); err != nil {
 		log.
 			WithField("command", command).
