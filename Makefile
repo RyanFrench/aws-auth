@@ -7,7 +7,7 @@ OUTPUT := "bin/aws-role"
 
 build:
 	mkdir -p bin
-	go build -v -i -ldflags "-X main.version=${CIRCLE_TAG}" -o ${OUTPUT}
+	go build -v -i -ldflags "-X cmd.root.version=${CIRCLE_TAG}" -o ${OUTPUT}
 
 test: build
 	go test -v ./...
