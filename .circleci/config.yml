@@ -3,14 +3,14 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/RyanFrench/aws-role
+    working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
       - run: make build
   test:
     docker:
       - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/RyanFrench/aws-role
+    working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
       - run: make test-junit
