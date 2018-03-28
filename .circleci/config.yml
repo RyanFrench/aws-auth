@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    steps:
+      - checkout
+      - run: make build
+  test:
+    docker:
+      - image: circleci/golang/1.10
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    steps:
+      - checkout
+      - run: make test-junit
+      - store_test_results:
+          path: report.xml
+workflows:
+  version: 2
+  workflow:
+    - build
+    - test
