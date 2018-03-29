@@ -17,7 +17,7 @@ Currently, the only way to install the utility is from source. It requires you t
 
 ### Assume a role
 
-`aws-role --role-arn [role] [command]`
+`aws-role --role-arn=[role] [command]`
 
 This will assume `[role]` and then run `[command]` using that role.
 

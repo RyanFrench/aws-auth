@@ -23,7 +23,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "aws-role --role-arn [role] [command]",
+	Use:   "aws-role --role-arn=[role] [command]",
 	Short: "Assume a role in AWS and optionally run a command",
 	Long: `
 Run a command within the context of assuming a role. This is not persistent, and will only affect the command that is passed in.
