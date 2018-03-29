@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -29,10 +30,13 @@ Run a command within the context of assuming a role. This is not persistent, and
 
 e.g.
 
-aws-role  --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
-	Run:     run,
-	Version: "0.1.0",
-	Args:    cobra.MinimumNArgs(1),
+aws-role --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
+	Run:                   run,
+	Version:               "0.1.0",
+	Args:                  cobra.MinimumNArgs(1),
+	DisableFlagParsing:    true,
+	DisableFlagsInUseLine: true,
+	PersistentPreRun:      preRun,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -48,6 +52,32 @@ func Execute() {
 	}
 }
 
+func preRun(cmd *cobra.Command, args []string) {
+	var index int
+	for i, arg := range args {
+		if strings.HasPrefix(arg, "--") {
+			cmd.Flags().Parse([]string{arg})
+		} else {
+			index = i
+			break
+		}
+	}
+	args = args[index:]
+	cmd.SetArgs(args)
+}
+
+func stripFlags(args []string) []string {
+	var index int
+	for i, arg := range args {
+		if !strings.HasPrefix(arg, "--") {
+			index = i
+			break
+		}
+	}
+	args = args[index:]
+	return args
+}
+
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -56,6 +86,7 @@ func init() {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	args = stripFlags(args)
 	roleSessionName, _ := uuid.NewUUID()
 	svc := sts.New(session.New())
 	input := &sts.AssumeRoleInput{
@@ -98,7 +129,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	if err := command.Run(); err != nil {
 		log.
-			WithField("command", command).
+			WithField("command", command.Args).
 			WithError(err).
 			Fatalln("Failed to run command")
 	}
