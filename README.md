@@ -17,9 +17,16 @@ Currently, the only way to install the utility is from source. It requires you t
 
 ### Assume a role
 
-`aws-role --role-arn=[role] [command]`
+`aws-role --role-arn=role [--duration=seconds] [command]`
 
-This will assume `[role]` and then run `[command]` using that role.
+This will assume `role` and then run `command` using that role.
+
+### Parameters
+
+| Parameter | Description| Required | Default |
+|-----------|------------|----------|---------|
+| role-arn  | The role to assume | Yes |
+| duration  | The duration, in seconds, before the token will expire | No | 3600
 
 ### Help
 

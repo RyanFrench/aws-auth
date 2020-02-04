@@ -3,9 +3,11 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -19,7 +21,8 @@ import (
 )
 
 var (
-	roleArn string
+	roleArn  string
+	duration int
 )
 
 var rootCmd = &cobra.Command{
@@ -32,7 +35,7 @@ e.g.
 
 aws-role --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
 	Run:                   run,
-	Version:               "0.1.0",
+	Version:               "0.2.0",
 	Args:                  cobra.MinimumNArgs(1),
 	DisableFlagParsing:    true,
 	DisableFlagsInUseLine: true,
@@ -83,10 +86,23 @@ func init() {
 
 	rootCmd.Flags().StringVarP(&roleArn, "role-arn", "r", "", "The arn of the role to assume in AWS (required)")
 	rootCmd.MarkFlagRequired("role-arn")
+
+	rootCmd.Flags().IntVarP(&duration, "duration", "d", 3600, "The duration, in seconds, for the role to be assumed")
 }
 
 func run(cmd *cobra.Command, args []string) {
 	args = stripFlags(args)
+
+	fmt.Println("duration: " + strconv.Itoa(duration))
+
+	// Duration max is 12 hours
+	if duration > 43200 || duration < 1 {
+		log.
+			WithField("command", cmd.Args).
+			WithError(errors.New("Duration cannot be longer than 12 hours (43200 seconds) or less than 1 second")).
+			Fatalln("Failed to run command")
+	}
+
 	roleSessionName, _ := uuid.NewUUID()
 	svc := sts.New(session.New())
 	input := &sts.AssumeRoleInput{
