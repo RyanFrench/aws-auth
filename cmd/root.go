@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -92,8 +91,6 @@ func init() {
 
 func run(cmd *cobra.Command, args []string) {
 	args = stripFlags(args)
-
-	fmt.Println("duration: " + strconv.Itoa(duration))
 
 	// Duration max is 12 hours
 	if duration > 43200 || duration < 1 {
