@@ -95,7 +95,7 @@ func run(cmd *cobra.Command, args []string) {
 	if len(roleArn) == 0 {
 		log.
 			WithField("command", cmd.Args).
-			WithError(errors.New("RoleArn cannot be empty")).
+			WithError(errors.New("--role-arn field cannot be empty")).
 			Fatalln("Failed to run command")
 	}
 
@@ -103,7 +103,7 @@ func run(cmd *cobra.Command, args []string) {
 	if duration > 43200 || duration < 1 {
 		log.
 			WithField("command", cmd.Args).
-			WithError(errors.New("Duration cannot be longer than 12 hours (43200 seconds) or less than 1 second")).
+			WithError(errors.New("--duration cannot be longer than 12 hours (43200 seconds) or less than 1 second")).
 			Fatalln("Failed to run command")
 	}
 
