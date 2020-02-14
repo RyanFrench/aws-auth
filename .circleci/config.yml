@@ -2,14 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.10
+      - image: circleci/golang:1.13
     working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
       - run: make build
   test:
     docker:
-      - image: circleci/golang:1.10
+      - image: circleci/golang:1.13
     working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
