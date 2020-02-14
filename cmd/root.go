@@ -84,13 +84,20 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.Flags().StringVarP(&roleArn, "role-arn", "r", "", "The arn of the role to assume in AWS (required)")
-	rootCmd.MarkFlagRequired("role-arn")
+	rootCmd.MarkFlagRequired("")
 
 	rootCmd.Flags().IntVarP(&duration, "duration", "d", 3600, "The duration, in seconds, for the role to be assumed")
 }
 
 func run(cmd *cobra.Command, args []string) {
 	args = stripFlags(args)
+
+	if len(roleArn) == 0 {
+		log.
+			WithField("command", cmd.Args).
+			WithError(errors.New("RoleArn cannot be empty")).
+			Fatalln("Failed to run command")
+	}
 
 	// Duration max is 12 hours
 	if duration > 43200 || duration < 1 {
@@ -129,7 +136,7 @@ func run(cmd *cobra.Command, args []string) {
 			log.WithError(err).
 				Errorln("Error assuming role")
 		}
-		return
+		os.Exit(1)
 	}
 
 	command := exec.Command(args[0], args[1:]...)
