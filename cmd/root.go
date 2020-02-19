@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -21,7 +22,7 @@ import (
 
 var (
 	roleArn  string
-	duration int
+	duration int64
 )
 
 var rootCmd = &cobra.Command{
@@ -86,7 +87,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&roleArn, "role-arn", "r", "", "The arn of the role to assume in AWS (required)")
 	rootCmd.MarkFlagRequired("")
 
-	rootCmd.Flags().IntVarP(&duration, "duration", "d", 3600, "The duration, in seconds, for the role to be assumed")
+	rootCmd.Flags().Int64VarP(&duration, "duration", "d", 3600, "The duration, in seconds, for the role to be assumed")
 }
 
 func run(cmd *cobra.Command, args []string) {
@@ -110,7 +111,7 @@ func run(cmd *cobra.Command, args []string) {
 	roleSessionName, _ := uuid.NewUUID()
 	svc := sts.New(session.New())
 	input := &sts.AssumeRoleInput{
-		DurationSeconds: aws.Int64(3600),
+		DurationSeconds: aws.Int64(duration),
 		RoleArn:         aws.String(roleArn),
 		RoleSessionName: aws.String(roleSessionName.String()),
 	}
@@ -137,6 +138,14 @@ func run(cmd *cobra.Command, args []string) {
 				Errorln("Error assuming role")
 		}
 		os.Exit(1)
+	}
+
+	sessionExpiration := *assumeRoleResponse.Credentials.Expiration
+	if int64(time.Until(sessionExpiration).Seconds()) < duration-5 {
+		log.
+			WithField("command", cmd.Args).
+			WithError(errors.New("--duration cannot be longer than the maximum session duration allowed by the role")).
+			Fatalln("Failed to run command")
 	}
 
 	command := exec.Command(args[0], args[1:]...)
