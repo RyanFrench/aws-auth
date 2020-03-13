@@ -35,7 +35,7 @@ e.g.
 
 aws-role --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
 	Run:                   run,
-	Version:               "0.2.0",
+	Version:               "0.2.1",
 	Args:                  cobra.MinimumNArgs(1),
 	DisableFlagParsing:    true,
 	DisableFlagsInUseLine: true,
