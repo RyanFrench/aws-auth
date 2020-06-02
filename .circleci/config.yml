@@ -9,7 +9,7 @@ jobs:
       - attach_workspace:
           at: ./artifacts
       - run: make build
-      - run: cp bin/* ./artifacts
+      - run: cp -rv bin/* ./artifacts
   test:
     docker:
       - image: circleci/golang:1.13
