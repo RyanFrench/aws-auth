@@ -45,10 +45,6 @@ aws-role --role-arn=arn:aws:iam::1234567890:role/my-role aws s3 ls`,
 // Execute adds all child commands to the root command sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	_, err := exec.LookPath("aws")
-	if err != nil {
-		log.WithError(err).Fatal("aws cli is not installed. For information on how to install the aws cli, please visit https://aws.amazon.com/cli/")
-	}
 	if err := rootCmd.Execute(); err != nil {
 		log.Error(err)
 		os.Exit(-1)

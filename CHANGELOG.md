@@ -6,6 +6,9 @@
 ### Changed
 - Return the version without extra text in command line
 
+### Removed
+- Remove check for aws-cli, that's not our responsibility
+
 ## 0.2.0
 
 ### Added
