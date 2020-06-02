@@ -10,7 +10,7 @@ jobs:
           at: /tmp/artifacts
       - run: make build
       - persist_to_workspace:
-          root: /tmp/artifacts
+          root: bin/
           paths:
             - aws-role
       - store_artifacts:
