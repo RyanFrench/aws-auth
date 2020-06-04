@@ -10,19 +10,13 @@ jobs:
           at: /tmp/artifacts
       - run:
           name: Build darwin amd64
-          command: GOOS=darwin GOARCH=amd64 make build
-      - run:
-          name: Create darwin amd64
-          command: tar -czvf bin/aws-role.darwin.amd64.tar.gz bin/aws-role
+          command: GOOS=darwin GOARCH=amd64 go build -o bin/aws-role_darwin_amd64 -v ./...
       - run:
           name: Build windows amd64
-          command: GOOS=windows GOARCH=amd64 make build
+          command: GOOS=windows GOARCH=amd64 go build -o bin/ -v ./...
       - run:
           name: Build linux amd64
-          command: GOOS=linux GOARCH=amd64 make build
-      - run:
-          name: Create linux tar.gz
-          command: tar -czvf bin/aws-role.linux.amd64.tar.gz bin/aws-role#!/bin/bash -eo pipefail
+          command: GOOS=linux GOARCH=amd64 go build -o bin/ -v ./...
       - persist_to_workspace:
           root: bin/
           paths:

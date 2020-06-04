@@ -2,7 +2,7 @@
 
 build:
 	mkdir -p bin
-	go build -o bin/ -v ./...
+	go build -o bin/ -v ./... -i
 
 test: build
 	go test -v ./...
