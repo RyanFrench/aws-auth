@@ -9,12 +9,6 @@ jobs:
       - attach_workspace:
           at: /tmp/artifacts
       - run:
-          name: Build linux amd64
-          command: GOOS=linux GOARCH=amd64 make build
-      - run:
-          name: Create linux tar.gz
-          command: tar -czvf bin/aws-role.linux.amd64.tar.gz bin/aws-role
-      - run:
           name: Build darwin amd64
           command: GOOS=darwin GOARCH=amd64 make build
       - run:
@@ -23,6 +17,12 @@ jobs:
       - run:
           name: Build windows amd64
           command: GOOS=windows GOARCH=amd64 make build
+      - run:
+          name: Build linux amd64
+          command: GOOS=linux GOARCH=amd64 make build
+      - run:
+          name: Create linux tar.gz
+          command: tar -czvf bin/aws-role.linux.amd64.tar.gz bin/aws-role#!/bin/bash -eo pipefail
       - persist_to_workspace:
           root: bin/
           paths:
