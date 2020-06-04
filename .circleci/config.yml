@@ -9,6 +9,9 @@ jobs:
       - attach_workspace:
           at: /tmp/artifacts
       - run:
+          name: Install gox for cross-compiling
+          command: go get -u github.com/mitchellh/gox
+      - run:
           name: Build artifacts with gox for windows/linux amd64
           command: gox -osarch="linux/amd64 windows/amd64" -output "bin/{{.Dir}}"  ./...
       - persist_to_workspace:
