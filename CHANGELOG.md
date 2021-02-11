@@ -1,3 +1,8 @@
+## 0.3.2
+
+### Changed
+- Migrated build images to `circleci/golang:1.15`
+
 ## 0.3.1
 
 ### Changed

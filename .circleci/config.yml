@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.15
     working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
@@ -23,7 +23,7 @@ jobs:
           path: bin/
   test:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.15
     working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
@@ -32,7 +32,7 @@ jobs:
           path: report.xml
   publish-release:
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.15
     working_directory: /go/src/github.com/ryanfrench/aws-role
     steps:
       - checkout
