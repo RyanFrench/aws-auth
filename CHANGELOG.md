@@ -1,3 +1,8 @@
+## 0.3.1
+
+### Changed
+- Remove unused dependencies from `go.mod`
+
 ## 0.3.0
 
 ### Added
