@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.15
-    working_directory: /go/src/github.com/ryanfrench/aws-role
+      - image: circleci/golang:1.17
+    working_directory: /go/src/github.com/ryanfrench/aws-auth
     steps:
       - checkout
       - attach_workspace:
@@ -17,14 +17,14 @@ jobs:
       - persist_to_workspace:
           root: bin/
           paths:
-            - aws-role.exe
-            - aws-role
+            - aws-auth.exe
+            - aws-auth
       - store_artifacts:
           path: bin/
   test:
     docker:
-      - image: circleci/golang:1.15
-    working_directory: /go/src/github.com/ryanfrench/aws-role
+      - image: circleci/golang:1.17
+    working_directory: /go/src/github.com/ryanfrench/aws-auth
     steps:
       - checkout
       - run: make test-junit
@@ -32,8 +32,8 @@ jobs:
           path: report.xml
   publish-release:
     docker:
-      - image: circleci/golang:1.15
-    working_directory: /go/src/github.com/ryanfrench/aws-role
+      - image: circleci/golang:1.17
+    working_directory: /go/src/github.com/ryanfrench/aws-auth
     steps:
       - checkout
       - attach_workspace:
@@ -42,7 +42,7 @@ jobs:
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
-            VERSION=$(/tmp/artifacts/aws-role version)
+            VERSION=$(/tmp/artifacts/aws-auth version)
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} /tmp/artifacts
 workflows:
   version: 2
