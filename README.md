@@ -1,4 +1,4 @@
-# aws-role
+# aws-auth
 
 Small CLI utility to assume a role in AWS
 
@@ -11,13 +11,13 @@ Using this utility, a command can be run using an assumed role, as opposed to yo
 
 Currently, the only way to install the utility is from source. It requires you to have [go](https://golang.org) installed on your system.
 
-`go get github.com/ryanfrench/aws-role`
+`go get github.com/ryanfrench/aws-auth`
 
 ## Usage
 
 ### Assume a role
 
-`aws-role --role-arn=role [--duration=seconds] [command]`
+`aws-auth --role-arn=role [--duration=seconds] [command]`
 
 This will assume `role` and then run `command` using that role.
 
@@ -30,4 +30,4 @@ This will assume `role` and then run `command` using that role.
 
 ### Help
 
-`aws-role --help`
+`aws-auth --help`

@@ -1,4 +1,4 @@
-module github.com/ryanfrench/aws-role
+module github.com/ryanfrench/aws-auth
 
 go 1.14
 

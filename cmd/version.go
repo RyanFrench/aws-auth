@@ -8,7 +8,7 @@ import (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Returns the version of aws-role",
+	Short: "Returns the version of aws-auth",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(rootCmd.Version)
 	},

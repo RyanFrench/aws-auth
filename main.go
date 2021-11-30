@@ -2,7 +2,7 @@
 
 package main
 
-import "github.com/ryanfrench/aws-role/cmd"
+import "github.com/ryanfrench/aws-auth/cmd"
 
 func main() {
 	cmd.Execute()
