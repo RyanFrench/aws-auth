@@ -25,6 +25,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
-        project_path: "./cmd/test-binary"
-        binary_name: "test-binary"
-        extra_files: LICENSE README.md
+        extra_files: LICENSE README.md docs
